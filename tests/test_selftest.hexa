@@ -1,0 +1,24 @@
+#!hexa strict
+// tests/test_selftest.hexa — 11-verb spec-presence harness
+
+fn main() {
+    let root = env("HEXA_FINANCE_ROOT")
+    let mut p = "cli/hexa-finance.hexa"
+    if root.len() > 0 { p = root + "/cli/hexa-finance.hexa" }
+
+    let raw = exec("HEXA_FINANCE_ROOT=" + root + " hexa run " + p + " selftest 2>&1")
+    if raw.contains("__HEXA_FINANCE_SELFTEST__ PASS") == false {
+        println("test_selftest: FAIL (sentinel missing)")
+        println(raw.trim())
+        exit(1)
+    }
+    if raw.contains("total verbs: 11") == false {
+        println("test_selftest: FAIL (verb count != 11)")
+        exit(1)
+    }
+    if raw.contains("present:     11/11") == false {
+        println("test_selftest: FAIL (presence != 11/11)")
+        exit(1)
+    }
+    println("test_selftest: PASS — 11/11 hexa-finance verb specs present")
+}

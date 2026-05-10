@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use hexa-finance in academic work, please cite as below."
+title: "hexa-finance: HEXA family substrate (n=6 invariant lattice — finance·blockchain·crypto·economics·law)"
+authors:
+  - name: dancinlab contributors
+    affiliation: dancinlab
+license: MIT
+repository-code: "https://github.com/dancinlab/hexa-finance"
+url: "https://github.com/dancinlab/hexa-finance"
+version: "v0.1.0"
+date-released: "2026-05-10"
+keywords:
+  - hexa-family
+  - n6-lattice
+  - finance
+  - blockchain
+  - cryptography
+  - economics
+  - insurance
+  - law-justice
+  - jurisprudence
+  - spec-catalog

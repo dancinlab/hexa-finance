@@ -1,0 +1,211 @@
+#!hexa strict
+// hexa-finance/cli/hexa-finance.hexa — standalone hexa-finance CLI router (💰)
+//
+// 11-verb finance·blockchain·crypto·economics·law substrate dispatcher.
+
+let VERSION = "0.1.0"
+
+let HOME = env("HOME")
+let ROOT_ENV = env("HEXA_FINANCE_ROOT")
+
+fn root_dir() -> str {
+    if ROOT_ENV.len() > 0 { return ROOT_ENV }
+    let inferred = exec("dirname \"$(dirname \"$0\")\" 2>/dev/null || true").trim()
+    if inferred.len() > 0 { return inferred }
+    return HOME + "/.hexa-finance"
+}
+
+let ROOT = root_dir()
+let LOG_PATH = ROOT + "/state/hexa_finance_cli.log"
+
+fn verb_spec(verb: str) -> str {
+    if verb == "blockchain" { return ROOT + "/blockchain/blockchain.md" }
+    if verb == "cryptography" { return ROOT + "/cryptography/cryptography.md" }
+    if verb == "currency-economics" { return ROOT + "/currency-economics/currency-economics.md" }
+    if verb == "ecommerce-fintech" { return ROOT + "/ecommerce-fintech/ecommerce-fintech.md" }
+    if verb == "economics" { return ROOT + "/economics/economics.md" }
+    if verb == "economics-finance" { return ROOT + "/economics-finance/economics-finance.md" }
+    if verb == "insurance" { return ROOT + "/insurance/insurance.md" }
+    if verb == "jurisprudence" { return ROOT + "/jurisprudence/jurisprudence.md" }
+    if verb == "law-justice" { return ROOT + "/law-justice/law-justice.md" }
+    if verb == "marketing" { return ROOT + "/marketing/marketing.md" }
+    if verb == "monetary-history" { return ROOT + "/monetary-history/monetary-history.md" }
+    return ""
+}
+
+let VERBS = ["blockchain", "cryptography", "currency-economics", "ecommerce-fintech", "economics", "economics-finance", "insurance", "jurisprudence", "law-justice", "marketing", "monetary-history"]
+
+fn shq(s: str) -> str {
+    return "'" + s.replace("'", "'\\''") + "'"
+}
+
+fn has_flag(a: [str], flag: str) -> bool {
+    for x in a {
+        if x == flag { return true }
+    }
+    return false
+}
+
+fn json_mode(a: [str]) -> bool {
+    return has_flag(a, "--json")
+}
+
+fn _ts_now() -> str { return exec("date -u '+%Y-%m-%dT%H:%M:%SZ'").trim() }
+
+fn _audit(subcmd: str, args_str: str, exit_code: int) {
+    let line = "{\"ts\":\"" + _ts_now() + "\",\"caller\":\"hexa_finance_standalone\",\"subcmd\":\"hexa-finance " +
+               subcmd + "\",\"exit_code\":" + str(exit_code) + ",\"version\":\"" + VERSION + "\"}"
+    exec("mkdir -p " + shq(ROOT + "/state") + " 2>/dev/null")
+    exec("echo " + shq(line) + " >> " + shq(LOG_PATH) + " 2>/dev/null")
+}
+
+fn _file_exists(p: str) -> bool {
+    let r = exec("[ -f " + shq(p) + " ] && echo yes || echo no").trim()
+    return r == "yes"
+}
+
+fn cmd_list(a: [str]) {
+    if json_mode(a) {
+        let mut js = "{\"hexa_finance\":\"" + VERSION + "\",\"verbs_total\":11,"
+        js = js + "\"verbs\":[\"blockchain\",\"cryptography\",\"currency-economics\",\"ecommerce-fintech\",\"economics\",\"economics-finance\",\"insurance\",\"jurisprudence\",\"law-justice\",\"marketing\",\"monetary-history\"],"
+        js = js + "\"verdict\":\"SPEC_CATALOG_ONLY\"}"
+        println(js)
+        return
+    }
+    println("hexa-finance " + VERSION + " — 11-verb finance·blockchain·crypto·economics·law substrate (💰)")
+    println("")
+    println("  verbs (11):")
+    for v in VERBS { println("    " + v) }
+    println("")
+    println("  to read a verb spec:")
+    println("    hexa-finance <verb>          (prints verb spec path + first lines)")
+    println("    hexa-finance selftest        (11-verb spec presence sweep)")
+}
+
+fn cmd_verb(verb: str, a: [str]) {
+    let spec = verb_spec(verb)
+    if spec == "" {
+        eprintln("hexa-finance: unknown verb '" + verb + "'")
+        eprintln("run 'hexa-finance list' for the 11-verb table")
+        _audit(verb, "unknown", 2)
+        exit(2)
+    }
+    let present = _file_exists(spec)
+    println("hexa-finance " + verb + " — substrate spec (v" + VERSION + ")")
+    println("  spec_path: " + spec)
+    if present == false {
+        eprintln("  status: MISSING")
+        _audit(verb, "missing", 1)
+        exit(1)
+    }
+    println("  status: PRESENT")
+    println("  --- first 20 lines ---")
+    let head = exec("head -20 " + shq(spec) + " 2>/dev/null")
+    println(head.trim())
+    println("  ----------------------")
+    if json_mode(a) {
+        let mut js = "{\"hexa_finance\":\"" + VERSION + "\",\"verb\":\"" + verb + "\",\"present\":true}"
+        println(js)
+    }
+    _audit(verb, "", 0)
+}
+
+fn cmd_selftest(a: [str]) {
+    let mut ok = 0
+    let mut miss: [str] = []
+    for v in VERBS {
+        let spec = verb_spec(v)
+        if _file_exists(spec) { ok = ok + 1 } else { miss = miss + [v] }
+    }
+    let total = len(VERBS)
+    println("hexa-finance selftest — verb-spec presence sweep")
+    println("  total verbs: " + str(total))
+    println("  present:     " + str(ok) + "/" + str(total))
+    if ok == total {
+        println("__HEXA_FINANCE_SELFTEST__ PASS")
+        if json_mode(a) {
+            println("{\"hexa_finance\":\"" + VERSION + "\",\"verdict\":\"PASS\",\"present\":" + str(ok) + ",\"total\":" + str(total) + "}")
+        }
+        _audit("selftest", "", 0)
+        return
+    }
+    println("__HEXA_FINANCE_SELFTEST__ FAIL")
+    for m in miss { println("  missing: " + m) }
+    _audit("selftest", "", 1)
+    exit(1)
+}
+
+fn cmd_version() {
+    println("hexa-finance " + VERSION)
+    println("standalone finance·blockchain·crypto·economics·law substrate (extracted from canon@ded52144 on 2026-05-10)")
+    println("license: MIT")
+    println("repo:    https://github.com/dancinlab/hexa-finance")
+}
+
+fn cmd_help() {
+    println("hexa-finance " + VERSION + " — 11-verb finance·blockchain·crypto·economics·law CLI (💰)")
+    println("")
+    println("usage: hexa-finance <subcmd> [flags...]")
+    println("")
+    println("verb subcommands:")
+    println("  blockchain           blockchain substrate")
+    println("  cryptography         cryptography substrate")
+    println("  currency-economics   currency economics substrate")
+    println("  ecommerce-fintech    ecommerce fintech substrate")
+    println("  economics            economics substrate")
+    println("  economics-finance    economics finance substrate")
+    println("  insurance            insurance substrate")
+    println("  jurisprudence        jurisprudence substrate")
+    println("  law-justice          law justice substrate")
+    println("  marketing            marketing substrate")
+    println("  monetary-history     monetary history substrate")
+    println("")
+    println("utility subcommands:")
+    println("  list             verb table")
+    println("  selftest         11-verb spec presence sweep")
+    println("")
+    println("global flags:")
+    println("  --version        show version")
+    println("  --json           machine-parseable JSON tail")
+    println("  --help, -h       this help")
+    println("")
+    println("env:")
+    println("  HEXA_FINANCE_ROOT       override repo root")
+}
+
+fn main() {
+    let _raw = args()
+    let mut _sidx = -1
+    let mut _i = 0
+    while _i < _raw.len() {
+        if _raw[_i].ends_with(".hexa") { _sidx = _i; break }
+        _i = _i + 1
+    }
+    let mut _user_start = 2
+    if _sidx >= 0 { _user_start = _sidx + 1 }
+
+    let mut a: [str] = ["hexa_finance_cli", "hexa_finance_router"]
+    let mut _ua = _user_start
+    while _ua < _raw.len() {
+        a = a + [_raw[_ua]]
+        _ua = _ua + 1
+    }
+    let n = len(a)
+
+    if n < 3 { cmd_help(); return }
+
+    let sub = a[2]
+
+    if sub == "--version" || sub == "-V" || sub == "version" { cmd_version(); return }
+    if has_flag(a, "--help") || has_flag(a, "-h") { cmd_help(); return }
+    if sub == "help"      { cmd_help(); return }
+    if sub == "list"      { cmd_list(a); return }
+    if sub == "selftest"  { cmd_selftest(a); return }
+
+    if verb_spec(sub) != "" { cmd_verb(sub, a); return }
+
+    eprintln("hexa-finance: unknown subcommand '" + sub + "'")
+    eprintln("run 'hexa-finance help' or 'hexa-finance list' for usage")
+    _audit(sub, "", 2)
+    exit(2)
+}
