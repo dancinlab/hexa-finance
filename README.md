@@ -22,24 +22,6 @@ the larger `canon` monorepo; this standalone repo extracts 11 leaves
 
 ---
 
-## Verbs
-
-| Verb | Spec | Concern | Status |
-|------|------|---------|--------|
-| `blockchain` | [blockchain/blockchain.md](blockchain/blockchain.md) | blockchain substrate | grounded |
-| `cryptography` | [cryptography/cryptography.md](cryptography/cryptography.md) | cryptography substrate | grounded |
-| `currency-economics` | [currency-economics/currency-economics.md](currency-economics/currency-economics.md) | currency economics substrate | grounded |
-| `ecommerce-fintech` | [ecommerce-fintech/ecommerce-fintech.md](ecommerce-fintech/ecommerce-fintech.md) | ecommerce fintech substrate | grounded |
-| `economics` | [economics/economics.md](economics/economics.md) | economics substrate | grounded |
-| `economics-finance` | [economics-finance/economics-finance.md](economics-finance/economics-finance.md) | economics finance substrate | grounded |
-| `insurance` | [insurance/insurance.md](insurance/insurance.md) | insurance substrate | grounded |
-| `jurisprudence` | [jurisprudence/jurisprudence.md](jurisprudence/jurisprudence.md) | jurisprudence substrate | grounded |
-| `law-justice` | [law-justice/law-justice.md](law-justice/law-justice.md) | law justice substrate | grounded |
-| `marketing` | [marketing/marketing.md](marketing/marketing.md) | marketing substrate | grounded |
-| `monetary-history` | [monetary-history/monetary-history.md](monetary-history/monetary-history.md) | monetary history substrate | grounded |
-
----
-
 ## n=6 master identity
 
 ```
