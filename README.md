@@ -59,20 +59,20 @@ the larger `canon` monorepo; this standalone repo extracts 11 leaves
 
 ## Install
 
-### Via `hx` (works today)
-
 ```bash
-hx install hexa-finance --entry cli/hexa-finance.hexa
-hexa-finance --version           # → 0.1.0
-hexa-finance selftest            # → 11/11 verb specs PASS
+# 1. Install hexa-lang (gives you `hexa` + `hx` package manager)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/dancinlab/hexa-lang/main/install.sh)"
+
+# 2. Install hexa-finance
+hx install hexa-finance
 ```
 
-### CLI subcommands
+## Run
 
 ```bash
-hexa-finance list                # 11-verb table
-hexa-finance <verb>              # read verb spec (path + first 20 lines)
-hexa-finance selftest            # 11/11 spec presence sweep
+hexa-finance <verb>     # render any of 11 verbs (see `hexa-finance list`)
+hexa-finance list       # verb table
+hexa-finance selftest   # 11-verb spec presence sweep
 ```
 
 ---
