@@ -1,3 +1,4 @@
+<!-- @disclaimer: NOT financial advice. NOT legal advice. Spec catalog only — consult licensed counsel / advisor. Crypto verbs preserve: speculative, high-risk, unregulated in many jurisdictions. -->
 <!-- @canonical: canon@ded52144:domains/infra/insurance/insurance.md -->
 <!-- @extracted: 2026-05-10 -->
 <!-- @md5_at_extraction: ee452a9ef6a195909c8695e81c312380 -->

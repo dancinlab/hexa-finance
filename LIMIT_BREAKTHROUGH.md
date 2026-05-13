@@ -70,12 +70,25 @@ The dominant performance envelopes are:
 - **Basel III capital ratios** — regulatory contract (BIS); not physics
 - **MiCA crypto-asset regulation** — EU regulatory (2024)
 - **SEC Reg-NMS, Reg-T** — US regulatory
+- **SEC Rule 10b-5** — anti-fraud / insider-trading prohibition (Securities Exchange Act §10(b))
+- **FATF Recommendations + Travel Rule (R.16)** — AML/CFT standard, global
 - **PCI-DSS payment standards** — industry
 - **ISO 20022 messaging** — banking standard
 - **30/360, ACT/360, ACT/365** day-count conventions — convention
 - **MiFID II best-execution requirement** — EU regulatory
 
 > Per `LATTICE_POLICY.md §1.2`, none of these is anchored to n=6.
+
+### §2.4 Additional HARD anchors (protocol + macro)
+
+| # | Limit | Bound | Origin |
+|---|-------|-------|--------|
+| H11 | **Bitcoin supply cap** | 21M BTC total; halving every 210 000 blocks | Bitcoin protocol; HARD by consensus rule |
+| H12 | **Zero-lower-bound on nominal rates (ZLB)** | Nominal rate r ≥ 0 in cash-bearing economy (negative rates leak to physical cash) | Macroeconomics; HARD-ish (mildly negative possible w/ storage cost) |
+| H13 | **Usury law / statutory rate caps** | Per-jurisdiction APR ceilings (e.g. US state caps ~10–36%; KR 연 20%) | Legal; HARD by statute, NEGOTIATED across jurisdictions |
+| H14 | **Ethereum gas / block throughput** | ~30M gas/block target (post-EIP-1559); 12 s slot → ~2.5M gas/s | Ethereum protocol; HARD without fork |
+| H15 | **SEC Rule 10b-5 anti-fraud** | "Manipulative or deceptive device" prohibited in securities transactions | Securities Exchange Act 1934 §10(b) + Rule 10b-5; HARD by US law |
+| H16 | **FATF Travel Rule (R.16)** | Originator/beneficiary info on VASP transfers ≥ USD/EUR 1 000 | FATF 2019; NEGOTIATED globally, HARD per-jurisdiction once adopted |
 
 ---
 
@@ -161,6 +174,16 @@ data remains pseudonymous but linkable via legal process.
 8. **Crypto + insurance verbs**: hexa-finance covers these as *spec
    substrate*, not as deployed financial product. Nothing in this
    repo is "financial advice."
+9. **Crypto is speculative, high-risk, unregulated in many
+   jurisdictions**: BTC/ETH/altcoin price volatility is unbounded;
+   smart-contract bugs are irreversible; regulatory status varies
+   (MiCA EU 2024 vs. fragmented US state-level vs. outright bans).
+   Nothing in this repo is "financial advice" nor "legal advice".
+10. **NOT legal advice — consult licensed counsel**: jurisprudence /
+    law-justice / insurance / regulatory verbs are descriptive
+    substrate, not opinions on any specific case, contract, or
+    statute. Real disputes need a licensed attorney in your
+    jurisdiction.
 
 ---
 

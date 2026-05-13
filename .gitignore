@@ -1,0 +1,6 @@
+# hexa-finance — runtime artifacts ignored.
+state/markers/
+state/*.log
+*.pyc
+__pycache__/
+.DS_Store

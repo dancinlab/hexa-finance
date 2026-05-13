@@ -80,9 +80,26 @@ verb_count        = 11
 verbs_total       = 11
 verbs_wired       = 0
 verbs_spec        = 11
-verifiers_pass    = "TBD (initial extraction)"
-verdict           = "SPEC_CATALOG_ONLY"
+verifiers_pass    = "4/4 (verify/*.hexa PASS — see verify/run_all.hexa)"
+verdict           = "CLOSED"  # 11/11 verbs spec-present + disclaimers · 4/4 verify scripts PASS
 extracted_from    = "canon@ded52144 on 2026-05-10"
+spec_first        = true
+disclaimer_rail   = "NOT financial advice · NOT legal advice · crypto speculative/high-risk/unregulated-many-jurisdictions"
+
+# Run: `hexa run verify/run_all.hexa` from the repo root (exit 0 = all PASS).
+[verify]
+scripts_total = 4
+scripts_passed = 4
+scripts = [
+    "verify/spec_presence.hexa",       # 11/11 verb spec docs + finance/legal/crypto disclaimer rail
+    "verify/lattice_arithmetic.hexa",  # n=6 self-consistency (aux per LATTICE_POLICY §1.3; NEVER on externals)
+    "verify/real_limits_anchor.hexa",  # LIMIT_BREAKTHROUGH anchors (EMH · sqrt-law · Arrow · BTC 21M · ZLB · Basel · MiCA · 10b-5 · FATF · MiFID · Shor)
+    "verify/closure_consistency.hexa", # scoreboard cross-check (CLI · toml · README · AGENTS)
+]
+aggregator = "verify/run_all.hexa"
+verdict = "CLOSED"  # 11/11 verbs spec-present · 4/4 verify scripts PASS
+real_limits_first = true  # per LATTICE_POLICY §1.3 rule 2
+raw10_c3_honesty = "actual exchanges (CME · Nasdaq · Binance), regulators (SEC · CFTC · FSA · BoK), blockchains (Bitcoin · Ethereum) use THEIR OWN specs — no lattice-fit"
 
 # ── Scope honesty ─────────────────────────────────────────
 [scope]

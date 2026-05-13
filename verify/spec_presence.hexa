@@ -1,0 +1,105 @@
+#!hexa strict
+// hexa-finance/verify/spec_presence.hexa — 11-verb spec doc presence verifier.
+//
+// Closure anchor #1 for hexa-finance (spec-first substrate):
+// each of the 11 verbs (blockchain · cryptography · currency-economics ·
+// ecommerce-fintech · economics · economics-finance · insurance ·
+// jurisprudence · law-justice · marketing · monetary-history) declared in
+// hexa.toml [verbs] must resolve to a real spec markdown at
+// <subdir>/<filename>. Spec-presence is the *honest* closure check for a
+// spec-first repo — file presence, not behavioural promise.
+//
+// Per LATTICE_POLICY §1.3: spec-presence is real engineering verification
+// (files exist on disk); not a lattice tautology.
+//
+// Also enforces the finance/legal disclaimer rail (raw#10 C3 + product
+// constraint): every verb spec must carry NOT financial advice + NOT legal
+// advice + speculative/high-risk crypto caveat as a top-of-file marker.
+
+let HOME = env("HOME")
+let HEXA_FINANCE_ROOT_ENV = env("HEXA_FINANCE_ROOT")
+
+fn shq(s: str) -> str {
+    return "'" + s.replace("'", "'\\''") + "'"
+}
+
+fn _resolve_root() -> str {
+    if HEXA_FINANCE_ROOT_ENV.len() > 0 { return HEXA_FINANCE_ROOT_ENV }
+    let oldpwd = env("OLDPWD")
+    if oldpwd.len() > 0 {
+        let t = exec("[ -f " + shq(oldpwd) + "/hexa.toml ] && echo y || echo n").trim()
+        if t == "y" { return oldpwd }
+    }
+    let pwd = env("PWD")
+    if pwd.len() > 0 {
+        let t = exec("[ -f " + shq(pwd) + "/hexa.toml ] && echo y || echo n").trim()
+        if t == "y" { return pwd }
+    }
+    return HOME + "/core/hexa-finance"
+}
+
+fn _file_exists(p: str) -> bool {
+    let r = exec("[ -f " + shq(p) + " ] && echo yes || echo no").trim()
+    return r == "yes"
+}
+
+fn _file_contains(p: str, needle: str) -> bool {
+    let cmd = "grep -F " + shq(needle) + " " + shq(p) + " >/dev/null 2>&1 && echo yes || echo no"
+    return exec(cmd).trim() == "yes"
+}
+
+// 11-verb spec registry — must match cli/hexa-finance.hexa VERBS and hexa.toml [verbs].
+let VERBS = [
+    ["blockchain",          "blockchain/blockchain.md"],
+    ["cryptography",        "cryptography/cryptography.md"],
+    ["currency-economics",  "currency-economics/currency-economics.md"],
+    ["ecommerce-fintech",   "ecommerce-fintech/ecommerce-fintech.md"],
+    ["economics",           "economics/economics.md"],
+    ["economics-finance",   "economics-finance/economics-finance.md"],
+    ["insurance",           "insurance/insurance.md"],
+    ["jurisprudence",       "jurisprudence/jurisprudence.md"],
+    ["law-justice",         "law-justice/law-justice.md"],
+    ["marketing",           "marketing/marketing.md"],
+    ["monetary-history",    "monetary-history/monetary-history.md"],
+]
+
+fn main() {
+    let root = _resolve_root()
+    println("hexa-finance/verify/spec_presence — 11-verb spec doc presence + disclaimer rail")
+    println("  root: " + root)
+    println("")
+    let mut ok = 0
+    let mut bad = 0
+    for row in VERBS {
+        let verb = row[0]
+        let rel = row[1]
+        let abs_p = root + "/" + rel
+        if _file_exists(abs_p) == false {
+            println("  [FAIL] " + verb + " -> " + rel + " MISSING (abs: " + abs_p + ")")
+            bad = bad + 1
+            continue
+        }
+        // Disclaimer rail — non-negotiable for finance/legal substrate.
+        let fin = _file_contains(abs_p, "NOT financial advice")
+        let leg = _file_contains(abs_p, "NOT legal advice")
+        let spec = _file_contains(abs_p, "speculative")
+        if fin && leg && spec {
+            println("  [PASS] " + verb + " -> " + rel + " (disclaimers: fin+legal+crypto)")
+            ok = ok + 1
+        } else {
+            let mut why = ""
+            if fin == false { why = why + " NO-FIN-DISCLAIMER" }
+            if leg == false { why = why + " NO-LEGAL-DISCLAIMER" }
+            if spec == false { why = why + " NO-CRYPTO-CAVEAT" }
+            println("  [FAIL] " + verb + " -> " + rel + " present but missing:" + why)
+            bad = bad + 1
+        }
+    }
+    println("")
+    println("  verbs PASS (spec present + disclaimers): " + str(ok) + " / 11")
+    if bad > 0 {
+        println("__HEXA_FINANCE_SPEC_PRESENCE__ FAIL")
+        exit(1)
+    }
+    println("__HEXA_FINANCE_SPEC_PRESENCE__ PASS")
+}

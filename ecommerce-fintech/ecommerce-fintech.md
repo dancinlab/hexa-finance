@@ -1,3 +1,4 @@
+<!-- @disclaimer: NOT financial advice. NOT legal advice. Spec catalog only — consult licensed counsel / advisor. Crypto verbs preserve: speculative, high-risk, unregulated in many jurisdictions. -->
 <!-- @canonical: canon@ded52144:domains/infra/ecommerce-fintech/ecommerce-fintech.md -->
 <!-- @extracted: 2026-05-10 -->
 <!-- @md5_at_extraction: b90a9d328b6aac045891cc06a81a0750 -->

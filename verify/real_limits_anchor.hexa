@@ -1,0 +1,140 @@
+#!hexa strict
+// hexa-finance/verify/real_limits_anchor.hexa — real-limits-first anchor.
+//
+// Per LATTICE_POLICY.md §1.3 rule 2: each project's verify must use at
+// least one anchor from §1.2 (Shannon · Kolmogorov · c · ℏ · etc.) and
+// at least one engineering / industry / regulatory threshold.
+//
+// hexa-finance's real-limits audit lives in LIMIT_BREAKTHROUGH.md
+// (Wave M, 2026-05-12). This script confirms that file is present and
+// references the canonical finance / blockchain / crypto / law HARD
+// walls so any agent has a pointer from verify→audit.
+//
+// Honesty: no value here is computed against the n=6 lattice. Each
+// anchor is a real domain limit — EMH (Fama 1970), sqrt-law
+// (Almgren-Chriss), Arrow (1951), Akerlof (1970), Shor (1994), Bitcoin
+// protocol (21M cap, ~10 min blocks), Basel III (BIS), MiCA (EU 2024),
+// SEC Rule 10b-5, FATF Travel Rule, ZLB on nominal rates, statutory
+// usury caps, MiFID II.
+//
+// Finance/legal product constraints (load-bearing):
+//   – NOT financial advice
+//   – NOT legal advice, consult licensed counsel
+//   – Crypto: speculative, high-risk, unregulated in many jurisdictions
+
+let HOME = env("HOME")
+let HEXA_FINANCE_ROOT_ENV = env("HEXA_FINANCE_ROOT")
+
+fn shq(s: str) -> str {
+    return "'" + s.replace("'", "'\\''") + "'"
+}
+
+fn _resolve_root() -> str {
+    if HEXA_FINANCE_ROOT_ENV.len() > 0 { return HEXA_FINANCE_ROOT_ENV }
+    let oldpwd = env("OLDPWD")
+    if oldpwd.len() > 0 {
+        let t = exec("[ -f " + shq(oldpwd) + "/hexa.toml ] && echo y || echo n").trim()
+        if t == "y" { return oldpwd }
+    }
+    let pwd = env("PWD")
+    if pwd.len() > 0 {
+        let t = exec("[ -f " + shq(pwd) + "/hexa.toml ] && echo y || echo n").trim()
+        if t == "y" { return pwd }
+    }
+    return HOME + "/core/hexa-finance"
+}
+
+fn _file_exists(p: str) -> bool {
+    let r = exec("[ -f " + shq(p) + " ] && echo yes || echo no").trim()
+    return r == "yes"
+}
+
+fn _file_contains(p: str, needle: str) -> bool {
+    let cmd = "grep -F " + shq(needle) + " " + shq(p) + " >/dev/null 2>&1 && echo yes || echo no"
+    return exec(cmd).trim() == "yes"
+}
+
+fn main() {
+    let root = _resolve_root()
+    println("hexa-finance/verify/real_limits_anchor — real-limits-first check")
+    println("  root: " + root)
+    println("")
+    println("  policy: LATTICE_POLICY §1.3 rule 2 — at least 1 real limit anchor required")
+    println("  source: LIMIT_BREAKTHROUGH.md (Wave M, finance/blockchain/crypto/law audit)")
+    println("")
+
+    let mut ok = 0
+    let mut bad = 0
+
+    // 1. Audit file must exist.
+    let audit = root + "/LIMIT_BREAKTHROUGH.md"
+    if _file_exists(audit) {
+        println("  [PASS] LIMIT_BREAKTHROUGH.md present")
+        ok = ok + 1
+    } else {
+        println("  [FAIL] LIMIT_BREAKTHROUGH.md missing (abs: " + audit + ")")
+        bad = bad + 1
+    }
+
+    // 2. Audit must reference canonical finance/crypto/law HARD walls.
+    //    Each anchor is a sourced HARD/SOFT wall — NOT a lattice fit.
+    let anchors = [
+        ["EMH semi-strong (Fama 1970)",        "EMH"],
+        ["Market-impact sqrt-law",              "sqrt-law"],
+        ["Arrow's impossibility (1951)",        "Arrow"],
+        ["Akerlof lemons (1970)",               "Akerlof"],
+        ["Almgren-Chriss execution",            "Almgren"],
+        ["Shor 1994 (factoring → PQC)",         "Shor"],
+        ["Bitcoin 21M supply cap",              "21M BTC"],
+        ["Bitcoin ~10 min block",               "10 min"],
+        ["Basel III capital floor",             "Basel III"],
+        ["MiCA crypto-asset regulation",        "MiCA"],
+        ["SEC Rule 10b-5 anti-fraud",           "10b-5"],
+        ["FATF Travel Rule",                    "Travel Rule"],
+        ["Zero-lower-bound on nominal rates",   "ZLB"],
+        ["Statutory usury caps",                "Usury"],
+        ["MiFID II best-execution",             "MiFID"],
+        ["Ethereum gas / block throughput",     "gas/block"],
+    ]
+    for a in anchors {
+        let label = a[0]
+        let needle = a[1]
+        if _file_contains(audit, needle) {
+            println("  [PASS] anchor referenced: " + label)
+            ok = ok + 1
+        } else {
+            println("  [FAIL] anchor missing: " + label + " (needle: '" + needle + "')")
+            bad = bad + 1
+        }
+    }
+
+    // 3. Honesty caveat — product constraint: NOT financial advice; NOT
+    //    legal advice; crypto speculative/high-risk caveat preserved.
+    let caveats = [
+        ["NOT financial advice",                 "financial advice"],
+        ["No alpha promise (EMH respect)",       "alpha"],
+        ["EMH approximately valid",              "approximately"],
+        ["Sqrt-law caps capacity (no infinite)", "infinite scaling"],
+        ["Arrow HARD on social choice",          "HARD"],
+        ["Speculative / high-risk crypto",       "speculative"],
+    ]
+    for c in caveats {
+        let label = c[0]
+        let needle = c[1]
+        if _file_contains(audit, needle) {
+            println("  [PASS] honesty caveat preserved: " + label)
+            ok = ok + 1
+        } else {
+            println("  [FAIL] honesty caveat MISSING: " + label + " (needle: '" + needle + "')")
+            bad = bad + 1
+        }
+    }
+
+    println("")
+    println("  anchors + caveats verified: " + str(ok) + "  failures: " + str(bad))
+    if bad > 0 {
+        println("__HEXA_FINANCE_REAL_LIMITS_ANCHOR__ FAIL")
+        exit(1)
+    }
+    println("__HEXA_FINANCE_REAL_LIMITS_ANCHOR__ PASS")
+}
