@@ -1,4 +1,24 @@
-# 💰 hexa-finance — n=6 blockchain, cryptography, economics, finance, law and insurance substrate (11-verb library)
+<p align="center">
+  <img src="docs/logo.svg" width="140" alt="hexa-finance">
+</p>
+
+<h1 align="center">💰 hexa-finance</h1>
+
+<p align="center"><strong>HEXA-Finance family</strong> — financial systems · blockchain · cryptography · economics · law · insurance · 11-verb substrate</p>
+
+<p align="center">
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue"></a>
+  <a href=".github/workflows/lint.yml"><img alt="CI" src="https://github.com/dancinlab/hexa-finance/actions/workflows/lint.yml/badge.svg"></a>
+  <img alt="Version" src="https://img.shields.io/badge/spec-v0.1.0-success">
+  <img alt="Verbs" src="https://img.shields.io/badge/verbs-11-informational">
+  <img alt="Verify" src="https://img.shields.io/badge/verify-4%2F4-informational">
+  <img alt="Closure" src="https://img.shields.io/badge/closure-CLOSED_11%2F11-informational">
+  <img alt="Sibling" src="https://img.shields.io/badge/sibling-hexa--mind%20·%20hexa--farm%20·%20hexa--lang-blueviolet">
+</p>
+
+<p align="center">finance · blockchain · cryptography · economics · jurisprudence · insurance · marketing · monetary-history · n=6 lattice</p>
+
+---
 
 > 11-verb finance·blockchain·crypto·economics·law substrate organized as a closed-form spec catalog.
 > Each verb derives every parameter from σ(6)=12, τ(6)=4, φ(6)=2 number theory.
@@ -6,16 +26,9 @@
 > extracted from `canon@ded52144` on 2026-05-10.
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20114988.svg)](https://doi.org/10.5281/zenodo.20114988)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.1.0-informational.svg)](hexa.toml)
-[![Verbs: 11](https://img.shields.io/badge/verbs-11-blue.svg)](#verbs)
-[![n=6 lattice](https://img.shields.io/badge/n=6-σ·φ_=_n·τ_=_24-blue.svg)](#n6-master-identity)
-[![verify 4/4](https://img.shields.io/badge/verify-4%2F4_PASS-brightgreen.svg)](#verify)
-[![closure CLOSED](https://img.shields.io/badge/closure-CLOSED_11%2F11-brightgreen.svg)](hexa.toml)
+[![n=6 lattice](https://img.shields.io/badge/n=6-σ·φ_=_n·τ_=_24-purple.svg)](#n6-master-identity)
 [![not financial advice](https://img.shields.io/badge/NOT-financial_advice-red.svg)](LIMIT_BREAKTHROUGH.md)
 [![not legal advice](https://img.shields.io/badge/NOT-legal_advice-red.svg)](LIMIT_BREAKTHROUGH.md)
-
----
 
 ## Why hexa-finance?
 
@@ -23,8 +36,6 @@
 substrate concerned with blockchain, cryptography, economics, finance, law and insurance. Each leaf was previously embedded in
 the larger `canon` monorepo; this standalone repo extracts 11 leaves
 (`domains/compute/blockchain, domains/compute/cryptography, domains/infra/currency-economics, domains/infra/ecommerce-fintech, domains/infra/economics, domains/infra/economics-finance, domains/infra/insurance, domains/infra/jurisprudence, domains/infra/law-justice, domains/infra/marketing, domains/infra/monetary-history`) into a flat, top-level per-verb layout.
-
----
 
 ## n=6 master identity
 
@@ -41,7 +52,11 @@ the larger `canon` monorepo; this standalone repo extracts 11 leaves
 | φ(6)   | 2     | totient                                   |
 | J₂     | 24    | second Jordan totient                     |
 
----
+## Status
+
+**SPEC_CATALOG_ONLY at v0.1.0** — markdown spec library + .hexa CLI router. No verb
+ships a working .hexa runtime module yet; this repo is the closed-form spec
+catalog only.
 
 ## Install
 
@@ -61,8 +76,6 @@ hexa-finance list       # verb table
 hexa-finance selftest   # 11-verb spec presence sweep
 ```
 
----
-
 ## Verify
 
 `hexa-finance` ships a 4-script SPEC_FIRST closure suite under `verify/`:
@@ -70,7 +83,6 @@ hexa-finance selftest   # 11-verb spec presence sweep
 | # | Script | Anchor |
 |---|--------|--------|
 | 1 | `verify/spec_presence.hexa`       | 11/11 verb spec docs present + disclaimer rail (NOT financial advice / NOT legal advice / crypto speculative-high-risk caveat) |
-| 2 | `verify/lattice_arithmetic.hexa`  | n=6 self-consistency (aux only per `LATTICE_POLICY.md §1.3`; **never** applied to external entities — CME, Nasdaq, Binance, SEC, CFTC, BoK, Bitcoin, Ethereum use their **own** specs, raw#10 C3) |
 | 3 | `verify/real_limits_anchor.hexa`  | `LIMIT_BREAKTHROUGH.md` anchors: EMH · sqrt-law · Arrow · Akerlof · Shor · Bitcoin 21M cap · ~10 min block · Ethereum gas/block · Basel III · MiCA · SEC Rule 10b-5 · FATF Travel Rule · ZLB · statutory usury · MiFID II |
 | 4 | `verify/closure_consistency.hexa` | Scoreboard cross-check: CLI · `hexa.toml` · README badge · AGENTS.md |
 
@@ -87,8 +99,6 @@ hexa run verify/run_all.hexa     # exit 0 ⇒ all 4 scripts PASS
 - **Crypto verbs preserve:** speculative, high-risk, **unregulated in many jurisdictions**. Cryptographic hardness (factoring, DLP, SHA-256 collision) and protocol limits (Bitcoin 21M cap, ~10 min blocks, BFT n ≥ 3f+1) are HARD walls.
 - **No lattice-fit on externals.** Per `LATTICE_POLICY.md §1.3 rule 4`, exchanges (CME, Nasdaq, Binance), regulators (SEC, CFTC, FSA, BoK), and blockchains (Bitcoin, Ethereum) use *their own* specs — no `n=6` mapping.
 
----
-
 ## Cross-link
 
 - 🧠 [dancinlab/hexa-mind](https://github.com/dancinlab/hexa-mind) — 7-verb mental substrate.
@@ -96,16 +106,41 @@ hexa run verify/run_all.hexa     # exit 0 ⇒ all 4 scripts PASS
 
 Upstream concept SSOT: `canon/{domains/compute/blockchain,domains/compute/cryptography,domains/infra/currency-economics,domains/infra/ecommerce-fintech,domains/infra/economics,domains/infra/economics-finance,domains/infra/insurance,domains/infra/jurisprudence,domains/infra/law-justice,domains/infra/marketing,domains/infra/monetary-history}/`.
 
----
+## Repo layout
 
-## Status
-
-**SPEC_CATALOG_ONLY at v0.1.0** — markdown spec library + .hexa CLI router. No verb
-ships a working .hexa runtime module yet; this repo is the closed-form spec
-catalog only.
-
----
+```
+hexa-finance/
+├── README.md
+├── LICENSE                            MIT
+├── hexa.toml                          package manifest
+├── install.hexa                       hx hook
+├── cli/                               .hexa CLI router
+├── blockchain/                        verb 1
+├── cryptography/                      verb 2
+├── currency-economics/                verb 3
+├── ecommerce-fintech/                 verb 4
+├── economics/                         verb 5
+├── economics-finance/                 verb 6
+├── insurance/                         verb 7
+├── jurisprudence/                     verb 8
+├── law-justice/                       verb 9
+├── marketing/                         verb 10
+├── monetary-history/                  verb 11
+├── origins/                           historical context
+├── papers/                            research notes
+├── verify/                            4-script SPEC_FIRST verifier
+├── tests/                             test scaffolding
+├── docs/
+│   └── logo.svg                       hexagon + $ glyph
+├── LATTICE_POLICY.md                  n=6 lattice policy
+├── LIMIT_BREAKTHROUGH.md              EMH / sqrt-law / SEC / MiCA / Basel real-limits anchors
+├── IMPORTED_FROM_CANON.md             extraction provenance
+├── TAPE-AUDIT.md                      tape audit notes
+├── CITATION.cff
+├── AGENTS.tape                        agent identity (.tape v1.2)
+└── state/                             runtime markers (gitignored)
+```
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+[MIT](LICENSE) — see [LICENSE](LICENSE). Use freely.
