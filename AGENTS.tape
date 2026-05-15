@@ -46,7 +46,7 @@
 @I id001 := "hexa-finance" :: identity-claim [d=2026-05-14 active]
   kind = "HEXA-Finance family — financial systems"
   brief = "HEXA-Finance family · financial systems"
-  parent = "dancinlab/echoes"
+  parent = "dancinlab"
 
 @L l1 := "repo-layout" :: structure [active]
   AGENTS.tape -> "this file · governance + identity (.tape v1.2)"
